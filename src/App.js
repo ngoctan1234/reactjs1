@@ -58,6 +58,7 @@ function App() {
   return (
     <div className="App">
       <h2>Đã up lên git lần 2</h2>
+    <h2>Đã up lên git lần 3</h2>
       <h2 style={bgStyle}>React js</h2>
       <h1>{x}</h1>
       <h1>name:{text}</h1>
