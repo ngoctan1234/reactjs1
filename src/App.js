@@ -4,10 +4,24 @@ import StudentList from "./StudentList";
 import { useState, useEffect } from "react";
 function App() {
   const [x, setX] = useState(0);
+  const vd = [
+    { name: "Heo", old: 2 },
+    { name: "Ga", old: 3 },
+  ];
   const [check, setCheck] = useState(true);
   const [text, setText] = useState("Mèo");
   const [name, setName] = useState("");
-  const [list, setList] = useState([1, 2, 3, 4]);
+  const [list, setList] = useState(() => {
+    let listLocal;
+    if (localStorage.getItem("list")) {
+      listLocal = JSON.parse(localStorage.getItem("list"));
+    } else {
+      listLocal = vd;
+    }
+
+    console.log(listLocal);
+    return listLocal;
+  });
   const [student, setStudent] = useState({
     name: "Nguyễn Hoàng Gia Bảo",
     old: 5,
@@ -30,9 +44,20 @@ function App() {
   const handle_toggle_student = () => {
     setCheck((pre) => !pre);
   };
+  const handle_add = () => {
+    setList((pre) => {
+      const newList = [...pre, { name: name, old: 3 }];
+      localStorage.setItem("list", JSON.stringify(newList));
+      return newList;
+    });
+  };
+  const bgStyle = {
+    background: "aqua",
+    border: "1px solid green",
+  };
   return (
-    <div>
-      <h2>React js</h2>
+    <div className="App">
+      <h2 style={bgStyle}>React js</h2>
       <h1>{x}</h1>
       <h1>name:{text}</h1>
       <h1>
@@ -54,9 +79,23 @@ function App() {
       {check ? <StudentList /> : ""}
       <ul>
         {list.map((st, key) => {
-          return <li>{st}</li>;
+          // return <li>{JSON.stringify(st)}</li>;
+          return (
+            <li>
+              {st.name}, {st.old}
+            </li>
+          );
         })}
       </ul>
+      <form onSubmit={handle_Change_Text}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={handle_change_name}
+        />
+      </form>
+      <button onClick={handle_add}>Add student</button>
     </div>
   );
 }
